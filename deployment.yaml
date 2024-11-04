@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: hello-app
-        image: us-central1-docker.pkg.dev/pod-x-harkirat-singh/jenkins/hello-app:{batman}
+        image: europe-west1-docker.pkg.dev/pod-x-sarjan-purohit/jenkins/hello-app:{batman}
         ports:
         - containerPort: 8080
         # resources:
