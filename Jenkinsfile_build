@@ -1,0 +1,52 @@
+pipeline {
+    agent{
+        kubernetes{
+           inheritFrom 'default'
+        }
+    }
+    
+    parameters {
+        booleanParam(name: 'Build', defaultValue: true, description: 'Run CI Build?')
+        booleanParam(name: 'Deploy', defaultValue: true, description: 'Run App Deploy?')
+        string(name: 'BUILD_NUMBER', defaultValue: "latest", description: 'App image tag to deploy')
+    }
+    environment {
+        ZONE = "europe-west1-b"
+        PROJECT_ID = "pod-x-sarjan-purohit"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from the public Git repository
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/main']],  // Replace 'main' with your branch name
+                          userRemoteConfigs: [[url: 'https://github.com/agam-bajwa/gcp-test.git']]])
+                          
+            }
+        }
+        stage("Building Application Docker Image"){
+            when {
+                expression { params.Deploy }
+            }
+            steps{
+                script{
+                    sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
+                    sh 'docker build . -t europe-west1-docker.pkg.dev/pod-x-sarjan-purohit/jenkins/hello-app:${BUILD_NUMBER}'
+                    sh 'docker push europe-west1-docker.pkg.dev/pod-x-sarjan-purohit/jenkins/hello-app:${BUILD_NUMBER}'
+                    }
+                }
+            }
+            
+        stage('Trigger Deploy Job') {
+            when {
+                expression { params.Deploy }
+            }
+            steps {
+                build job: "CD Deploy Job", wait: true, 
+                parameters: [
+                  string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
+                ]
+            }
+        }
+    }
+}
