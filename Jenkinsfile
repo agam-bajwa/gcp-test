@@ -16,7 +16,7 @@ agent{
                 // Checkout code from the public Git repository
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/main']],  // Replace 'main' with your branch name
-                          userRemoteConfigs: [[url: 'https://github.com/Harkirat30/jenkins-master-slave.git']]])
+                          userRemoteConfigs: [[url: 'https://github.com/agam-bajwa/gcp-test.git']]])
                           
             }
         }
