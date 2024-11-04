@@ -30,7 +30,8 @@ pipeline {
             }
             steps{
                 script{
-                    sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
+                    sh 'gcloud auth configure-docker europe-west1-docker.pkg.dev'
+                    sh 'gcloud config list'
                     sh 'docker build . -t europe-west1-docker.pkg.dev/pod-x-sarjan-purohit/jenkins/hello-app:${BUILD_NUMBER}'
                     sh 'docker push europe-west1-docker.pkg.dev/pod-x-sarjan-purohit/jenkins/hello-app:${BUILD_NUMBER}'
                     }
