@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloweb
-  namespace: jenkins
+  namespace: app
   labels:
     app: hello
 spec:
