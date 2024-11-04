@@ -1,7 +1,7 @@
 pipeline {
 agent{
     kubernetes{
-       inheritFrom 'jenkins-slave'
+       inheritFrom 'default'
     }
 }
     environment {
