@@ -1,0 +1,43 @@
+pipeline {
+    agent{
+        kubernetes{
+           inheritFrom 'default'
+        }
+    }
+    
+    parameters {
+        string(name: 'BUILD_NUMBER', defaultValue: "latest", description: 'App image tag to deploy')
+    }
+    environment {
+        ZONE = "europe-west1-b"
+        PROJECT_ID = "pod-x-sarjan-purohit"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from the public Git repository
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/main']],  // Replace 'main' with your branch name
+                          userRemoteConfigs: [[url: 'https://github.com/agam-bajwa/gcp-test.git']]])
+                          
+            }
+        }
+        stage('Update Deployment YAML') {
+            steps {
+                script {
+                    sh '''
+                    sed -i "s|{batman}|${BUILD_NUMBER}|g" deployment.yaml
+                    '''
+                }
+            }
+        }
+        stage('Deploy App') {
+            steps {
+                echo "Build Number parameter received from parent: ${params.BUILD_NUMBER}"
+                sh "gcloud container clusters get-credentials primary --zone ${env.ZONE} --project ${env.PROJECT_ID}"
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+            }
+        }
+    }
+}
