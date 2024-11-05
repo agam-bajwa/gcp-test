@@ -43,7 +43,7 @@ pipeline {
                 expression { params.Deploy }
             }
             steps {
-                build(job: 'CD-Deploy-Job/main', wait: true, 
+                build(job: 'CI-CD-Test/CD-Deploy-Job/main', wait: true, 
                 parameters: [
                   string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
                 ])
