@@ -1,7 +1,8 @@
 pipeline {
-    agent{
-        kubernetes{
-           inheritFrom 'default'
+    agent {
+        kubernetes {
+            cloud 'jenkins-gke'
+            yaml """ """
         }
     }
     
