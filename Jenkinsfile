@@ -1,7 +1,7 @@
 pipeline {
 agent{
     kubernetes{
-       inheritFrom 'default'
+       yamlFile './jenkins-slave.yaml'
     }
 }
     environment {
@@ -10,16 +10,6 @@ agent{
     }
 
     stages{
-        
-        stage('Checkout') {
-            steps {
-                // Checkout code from the public Git repository
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/main']],  // Replace 'main' with your branch name
-                          userRemoteConfigs: [[url: 'https://github.com/agam-bajwa/gcp-test.git']]])
-                          
-            }
-        }
         stage("Building Application Docker Image"){
             steps{
                 script{
@@ -48,7 +38,6 @@ agent{
             steps{
                 script{
                     sh "gcloud container clusters get-credentials jenkins-cluster --zone ${env.ZONE} --project ${env.PROJECT_ID}"
-                    sh 'kubectl create namespace app'
                     sh 'kubectl apply -f deployment.yaml'
                     sh 'kubectl apply -f service.yaml'
                 }
