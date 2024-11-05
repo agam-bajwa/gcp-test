@@ -15,15 +15,6 @@ pipeline {
         PROJECT_ID = "pod-x-sarjan-purohit"
     }
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout code from the public Git repository
-                checkout([$class: 'GitSCM',
-                          branches: [[name: '*/main']],  // Replace 'main' with your branch name
-                          userRemoteConfigs: [[url: 'https://github.com/agam-bajwa/gcp-test.git']]])
-                          
-            }
-        }
         stage("Building Application Docker Image"){
             when {
                 expression { params.Deploy }
