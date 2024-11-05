@@ -1,8 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            cloud 'jenkins-gke'
-            yaml """ """
+            yamlFile './jenkins-slave.yaml'
         }
     }
     
