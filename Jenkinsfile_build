@@ -29,7 +29,7 @@ pipeline {
                 }
             }
             
-        stage('Trigger Deploy Job') {
+        stage('Trigger Deploy Job.') {
             when {
                 expression { params.Deploy }
             }
