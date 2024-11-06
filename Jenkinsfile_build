@@ -52,17 +52,17 @@ pipeline {
         success {
             // Actions to take when the pipeline succeeds
             echo 'Pipeline succeeded.'
-            slackSend color: "good", message: "Jenkins Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Successful"
+            slackSend color: "good", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Successful"
         }
         failure {
             // Actions to take when the pipeline fails
             echo 'Pipeline failed.'
-            slackSend color: "danger", message: "Jenkins Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Failed"
+            slackSend color: "danger", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> has Failed"
         }
         unstable {
             // Actions to take when the pipeline is unstable
             echo 'Pipeline is unstable.'
-            slackSend color: "warning", message: "Jenkins Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Unstable"
+            slackSend color: "warning", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Unstable"
         }
     }
 }
