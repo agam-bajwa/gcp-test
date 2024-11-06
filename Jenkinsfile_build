@@ -41,4 +41,25 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            // Actions that should always run, regardless of build result
+            echo 'Pipeline Ended.'
+        }
+        success {
+            // Actions to take when the pipeline succeeds
+            echo 'Pipeline succeeded.'
+            slackSend color: "good", message: "Jenkins Pipeline Successful"
+        }
+        failure {
+            // Actions to take when the pipeline fails
+            echo 'Pipeline failed.'
+            slackSend color: "danger", message: "Jenkins Pipeline Failed"
+        }
+        unstable {
+            // Actions to take when the pipeline is unstable
+            echo 'Pipeline is unstable.'
+            slackSend color: "warning", message: "Jenkins Pipeline Unstable"
+        }
+    }
 }
