@@ -34,11 +34,13 @@ pipeline {
                 expression { params.Deploy }
             }
             steps {
-                def deployJob = "CI-CD-Test/CD-Deploy-Job/${env.GIT_BRANCH}"
-                build(job: deployJob, wait: true, 
-                parameters: [
-                  string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
-                ])
+                script {
+                    def deployJob = "CI-CD-Test/CD-Deploy-Job/${env.GIT_BRANCH}"
+                    build(job: deployJob, wait: true, 
+                    parameters: [
+                      string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
+                    ])
+                }
             }
         }
     }
