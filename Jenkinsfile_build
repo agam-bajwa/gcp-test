@@ -34,10 +34,13 @@ pipeline {
                 expression { params.Deploy }
             }
             steps {
-                build(job: 'CI-CD-Test/CD-Deploy-Job/main', wait: true, 
-                parameters: [
-                  string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
-                ])
+                script {
+                    def deployJob = "CI-CD-Test/CD-Deploy-Job/${env.GIT_BRANCH}"
+                    build(job: deployJob, wait: true, 
+                    parameters: [
+                      string(name: 'BUILD_NUMBER', value: params.BUILD_NUMBER)
+                    ])
+                }
             }
         }
     }
@@ -49,17 +52,17 @@ pipeline {
         success {
             // Actions to take when the pipeline succeeds
             echo 'Pipeline succeeded.'
-            slackSend color: "good", message: "Jenkins Pipeline Successful"
+            slackSend color: "good", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Successful"
         }
         failure {
             // Actions to take when the pipeline fails
             echo 'Pipeline failed.'
-            slackSend color: "danger", message: "Jenkins Pipeline Failed"
+            slackSend color: "danger", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> has Failed"
         }
         unstable {
             // Actions to take when the pipeline is unstable
             echo 'Pipeline is unstable.'
-            slackSend color: "warning", message: "Jenkins Pipeline Unstable"
+            slackSend color: "warning", message: "Pipeline <${env.BUILD_URL}|${env.JOB_NAME}> is Unstable"
         }
     }
 }
